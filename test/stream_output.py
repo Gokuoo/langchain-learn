@@ -9,7 +9,7 @@ import asyncio
 load_dotenv()
 
 # # 创建带流式输出的 LLM
-# llm = ChatOpenAI(
+# model = ChatOpenAI(
 #     model="glm-4.6v",
 #     openai_api_key=os.getenv("ZHIPUAI_API_KEY"),
 #     openai_api_base="https://open.bigmodel.cn/api/paas/v4/",
@@ -18,10 +18,10 @@ load_dotenv()
 # )
 
 # # 发送消息（输出会实时流式显示）
-# response = llm.invoke([HumanMessage(content="写一首关于春天的诗")])
+# response = model.invoke([HumanMessage(content="写一首关于春天的诗")])
 
 
-llm = ChatOpenAI(
+model = ChatOpenAI(
     model="glm-4.5-air",
     openai_api_key=os.getenv("ZHIPUAI_API_KEY"),
     openai_api_base="https://open.bigmodel.cn/api/paas/v4/",
@@ -29,7 +29,7 @@ llm = ChatOpenAI(
 
 
 async def main():
-    async for event in llm.astream_events("你好", version="v1"):
+    async for event in model.astream_events("你好", version="v1"):
         if event["event"] == "on_chat_model_start":
             print(f"输入：{event['data']['input']}")
 
@@ -45,7 +45,7 @@ async def main():
 # asyncio.run(main())
 
 
-responses = llm.batch([
+responses = model.batch([
     "为什么鹦鹉有五颜六色的羽毛？",
     "飞机是如何飞行的？",
     "什么是量子计算？"
